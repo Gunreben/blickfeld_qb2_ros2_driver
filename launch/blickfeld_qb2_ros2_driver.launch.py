@@ -18,7 +18,7 @@ def generate_launch_description():
                 name="blickfeld_qb2_driver",
                 parameters=[
                     {
-                        "fqdn": "qb2",
+                        "fqdn": "192.168.26.26",
                         "frame_id": "lidar",
                         "point_cloud_topic": "/bf/points_raw",
                         "use_measurement_timestamp": False,
