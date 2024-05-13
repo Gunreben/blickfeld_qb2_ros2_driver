@@ -19,8 +19,8 @@ def generate_launch_description():
                 parameters=[
                     {
                         "fqdn": "192.168.26.26",
-                        "frame_id": "lidar",
-                        "point_cloud_topic": "/bf/points_raw",
+                        "frame_id": "sensorrig_frame",
+                        "point_cloud_topic": "/lidar/bf_qb2/points_raw",
                         "use_measurement_timestamp": False,
                         "publish_intensity": True,
                         "publish_point_id": True,
