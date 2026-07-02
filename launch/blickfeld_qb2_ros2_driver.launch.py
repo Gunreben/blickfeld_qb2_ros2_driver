@@ -14,17 +14,25 @@ def generate_launch_description():
         default_value='192.168.26.26',
         description='FQDN or IP address of the Qb2 device'
     )
-    
+
     frame_id_arg = DeclareLaunchArgument(
         'frame_id',
-        default_value='Root',
+        default_value='blickfeld_qb2',
         description='Frame ID for the point cloud'
     )
-    
+
     point_cloud_topic_arg = DeclareLaunchArgument(
         'point_cloud_topic',
         default_value='/bf/points_raw',
         description='Topic name for publishing point cloud'
+    )
+
+    application_key_arg = DeclareLaunchArgument(
+        'application_key',
+        default_value='',
+        description='Qb2 application key (created in the device WebGUI under '
+                    'user management). Required since Qb2 firmware restricts '
+                    'the point cloud stream API to authenticated clients.'
     )
 
     container = ComposableNodeContainer(
@@ -40,9 +48,11 @@ def generate_launch_description():
                 parameters=[
                     {
                         "fqdn": LaunchConfiguration('fqdn'),
+                        "application_key": LaunchConfiguration('application_key'),
                         "frame_id": LaunchConfiguration('frame_id'),
                         "point_cloud_topic": LaunchConfiguration('point_cloud_topic'),
-                        "use_measurement_timestamp": False,
+                        # Stamp with the device measurement time, not arrival time
+                        "use_measurement_timestamp": True,
                         "publish_intensity": True,
                         "publish_point_id": True,
                     }
@@ -52,10 +62,11 @@ def generate_launch_description():
         ],
         output="screen",
     )
-    
+
     return LaunchDescription([
         fqdn_arg,
         frame_id_arg,
         point_cloud_topic_arg,
+        application_key_arg,
         container
     ])
